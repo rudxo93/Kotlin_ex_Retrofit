@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duran.exretrofit.api.MyApi
 import com.duran.exretrofit.api.RetrofitInstance
+import com.duran.exretrofit.model.Post
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -20,6 +21,10 @@ class MainViewModel : ViewModel() {
     private var _mutableWord2 = MutableLiveData<String>()
     val liveWord2 : LiveData<String>
         get() = _mutableWord2
+
+    private var _mutableWordList = MutableLiveData<List<Post>>()
+    val liveWordList : LiveData<List<Post>>
+        get() = _mutableWordList
 
     fun getPost1() = viewModelScope.launch {
 
@@ -35,4 +40,9 @@ class MainViewModel : ViewModel() {
         _mutableWord2.value = post.title
     }
 
+    fun getPostAll() = viewModelScope.launch {
+        val postAll = retrofitInstance.getPostAll()
+        Log.d("MainViewModel", postAll.toString())
+        _mutableWordList.value = postAll
+    }
 }

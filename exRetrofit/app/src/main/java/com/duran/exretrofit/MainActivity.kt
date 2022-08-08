@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.duran.exretrofit.adapter.CustomAdapter
+import com.duran.exretrofit.model.Post
 import com.duran.exretrofit.viewModel.MainViewModel
 
 /*
@@ -31,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getPost1()
         viewModel.getPostNumber(3)
+        viewModel.getPostAll()
 
         val area1 = findViewById<TextView>(R.id.area1)
         val area2 = findViewById<TextView>(R.id.area2)
@@ -43,5 +48,12 @@ class MainActivity : AppCompatActivity() {
             area2.text = it.toString()
         })
 
+        val rv = findViewById<RecyclerView>(R.id.rv)
+
+        viewModel.liveWordList.observe(this, Observer {
+            val customAdapter = CustomAdapter(it as ArrayList<Post>)
+            rv.adapter = customAdapter
+            rv.layoutManager = LinearLayoutManager(this)
+        })
     }
 }

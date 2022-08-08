@@ -1,4 +1,4 @@
-package com.duran.exretrofit
+package com.duran.exretrofit.model
 
 data class Post (
     val userId: Int,

@@ -2,10 +2,10 @@ package com.duran.exretrofit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.duran.exretrofit.viewModel.MainViewModel
 
 /*
 Simple Retrofit Ex
@@ -21,55 +21,26 @@ https://jsonplaceholder.typicode.com/posts/3
 
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val api = RetrofitInstance.getInstnce().create(MyApi::class.java)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.getPost1()
+        viewModel.getPostNumber(3)
 
-        // 1. 유저 정보를 가져와서(userId)
-        api.getPost1().enqueue(object : Callback<Post> {
-            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                Log.e("API1", response.body().toString())
-                // 2. userId 기반으로 데이터를 가져오고 가져온 닉네임 값
-                api.getPostNumber(2).enqueue(object : Callback<Post> {
-                    override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                        Log.e("API2", response.body().toString())
-                        // 3. 닉네임 기반으로 데이터를 가져오고 유저의 댓글을 가져와서
-                        api.getPostNumber(3).enqueue(object : Callback<Post> {
-                            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                                Log.e("API3", response.body().toString())
-                                // 4. 유저의 댓글 기반으로 대댓글
-                                api.getPostNumber(4).enqueue(object : Callback<Post> {
-                                    override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                                        Log.e("API4", response.body().toString())
-                                    }
+        val area1 = findViewById<TextView>(R.id.area1)
+        val area2 = findViewById<TextView>(R.id.area2)
 
-                                    override fun onFailure(call: Call<Post>, t: Throwable) {
-                                        Log.e("API4", "fail")
-                                    }
+        viewModel.liveWord1.observe(this, Observer {
+            area1.text = it.toString()
+        })
 
-                                })
-                            }
-
-                            override fun onFailure(call: Call<Post>, t: Throwable) {
-                                Log.e("API3", "fail")
-                            }
-
-                        })
-                    }
-
-                    override fun onFailure(call: Call<Post>, t: Throwable) {
-                        Log.e("API2", "fail")
-                    }
-
-                })
-            }
-
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                Log.e("API1", "fail")
-            }
-
+        viewModel.liveWord2.observe(this, Observer {
+            area2.text = it.toString()
         })
 
     }

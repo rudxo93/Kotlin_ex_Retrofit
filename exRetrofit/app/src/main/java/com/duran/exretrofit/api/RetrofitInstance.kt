@@ -1,4 +1,4 @@
-package com.duran.exretrofit
+package com.duran.exretrofit.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

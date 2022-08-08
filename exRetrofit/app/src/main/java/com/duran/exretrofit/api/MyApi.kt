@@ -1,17 +1,17 @@
-package com.duran.exretrofit
+package com.duran.exretrofit.api
 
-import retrofit2.Call
+import com.duran.exretrofit.model.Post
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface MyApi {
 
     @GET("posts/1")
-    fun getPost1(): Call<Post>
+    suspend fun getPost1(): Post
 
     @GET("posts/{number}")
-    fun getPostNumber(
+    suspend fun getPostNumber(
         @Path("number") number: Int
-    ): Call<Post>
+    ): Post
 
 }

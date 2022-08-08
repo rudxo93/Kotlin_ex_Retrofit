@@ -1,8 +1,10 @@
 package com.duran.simplecoroutine
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -23,7 +25,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("TEST", "START")
+        val goToSecond = findViewById<Button>(R.id.goToSecond)
+        goToSecond.setOnClickListener {
+            val intent = Intent(this, SecondActivity::class.java)
+            startActivity(intent)
+        }
+
+/*        Log.d("TEST", "START")
 
         // 코루틴 실행 -> 비동기 작업을 원하는 형태로 실행할 수 있다.
         CoroutineScope(Dispatchers.IO).launch {
@@ -37,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("TEST", "END")
         // 예상순서 START -> END -> AP1 -> BP1 -> AP2 -> BP2
         // BUT START -> END -> AP1 -> AP2 -> BP1 -> BP2
+        */
     }
 
     suspend fun a() {
